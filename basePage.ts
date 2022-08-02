@@ -1,4 +1,5 @@
-import { Builder, By, Capabilities, until, WebDriver, WebElement } from "selenium-webdriver";
+import { Actions, Builder, By, Capabilities, until, WebDriver, WebElement } from "selenium-webdriver";
+import { ESO } from "./esoPO";
 const chromedriver = require('chromedriver')
 
 interface Options {
@@ -11,6 +12,7 @@ interface Options {
 export class BasePage {
     driver: WebDriver
     url: string
+
 
     constructor(options?: Options) {
         if (options && options.driver) this.driver = options.driver
@@ -27,13 +29,14 @@ export class BasePage {
             'Basepage.navigate() needs a url defined on the page objects or one passed in'
         ) 
     }
+
     async getElement(elementBy: By): Promise<WebElement> {
         await this.driver.wait(until.elementLocated(elementBy))
         let element = await this.driver.findElement(elementBy)
         await this.driver.wait(until.elementIsVisible(element))
         return element
     }
-
+    
     async click(elementBy: By): Promise<void> {
         return (await this.getElement(elementBy)).click()
     }
